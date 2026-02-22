@@ -1,0 +1,53 @@
+# Node modules
+node_modules
+**/node_modules
+
+# Environment variables
+.env
+.env.local
+.env.development
+.env.production
+
+# Build outputs
+dist
+build
+.next
+out
+release
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend específico
+frontend/dist
+frontend/.vite
+
+# Backend específico
+backend/dist
+
+# Electron
+electron/dist
+*.exe
+*.dmg
+*.AppImage
+
+# Tests
+coverage
+.nyc_output
+
+# Misc
+.DS_Store

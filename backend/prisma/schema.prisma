@@ -1,0 +1,53 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model usuario {
+  id            String    @id @default(uuid())
+  nome          String
+  email         String    @unique
+  senha         String
+  criado_em     DateTime  @default(now())
+  atualizado_em DateTime  @updatedAt
+  deletado_em   DateTime?
+
+  notas       nota[]
+  categorias  categoria[]
+}
+
+model categoria {
+  id            String    @id @default(uuid())
+  nome          String
+  usuario_id    String
+  criado_em     DateTime  @default(now())
+  atualizado_em DateTime  @updatedAt
+  deletado_em   DateTime?
+
+  usuario usuario @relation(fields: [usuario_id], references: [id])
+  notas   nota[]
+}
+
+model nota {
+  id            String    @id @default(uuid())
+  titulo        String
+  conteudo      String    // Texto normal ou Markdown
+  tipo          tipo_nota @default(TEXTO)
+  categoria_id  String?
+  usuario_id    String
+  criado_em     DateTime  @default(now())
+  atualizado_em DateTime  @updatedAt
+  deletado_em   DateTime?
+
+  usuario   usuario   @relation(fields: [usuario_id], references: [id])
+  categoria categoria? @relation(fields: [categoria_id], references: [id])
+}
+
+enum tipo_nota {
+  TEXTO
+  MARKDOWN
+}

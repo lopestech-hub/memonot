@@ -1,0 +1,64 @@
+# Node modules
+node_modules
+**/node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Build outputs
+dist
+build
+.next
+out
+
+# Development
+.git
+.gitignore
+.env.local
+.env.development
+*.log
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend específico
+frontend/dist
+frontend/node_modules
+frontend/.vite
+
+# Backend específico
+backend/dist
+backend/node_modules
+
+# Electron (não precisa no Docker)
+electron
+release
+*.exe
+*.dmg
+*.AppImage
+
+# Documentação
+README*.md
+docs
+*.md
+!package.json
+
+# Tests
+**/*.test.js
+**/*.test.ts
+**/*.spec.js
+**/*.spec.ts
+coverage
+.nyc_output
+
+# Misc
+.env.example
+docker-compose.yml

@@ -2,6 +2,7 @@ import { FastifyPluginAsync } from 'fastify'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
+import { authenticate } from '../plugins/auth'
 
 const registerSchema = z.object({
   nome: z.string().min(2),
@@ -126,7 +127,7 @@ export const authRoutes: FastifyPluginAsync = async (fastify) => {
 
   // Perfil do usuário
   fastify.get('/eu', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const userId = (request.user as any).sub

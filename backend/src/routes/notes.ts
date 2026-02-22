@@ -1,7 +1,14 @@
-import { FastifyPluginAsync } from 'fastify'
+import { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
-import { authenticate } from '../plugins/auth'
+
+async function authenticate(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    await request.jwtVerify()
+  } catch (err) {
+    reply.send(err)
+  }
+}
 
 const createNoteSchema = z.object({
   titulo: z.string().min(1),

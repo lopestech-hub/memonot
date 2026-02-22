@@ -1,8 +1,15 @@
-import { FastifyPluginAsync } from 'fastify'
+import { FastifyPluginAsync, FastifyRequest, FastifyReply } from 'fastify'
 import bcrypt from 'bcryptjs'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
-import { authenticate } from '../plugins/auth'
+
+async function authenticate(request: FastifyRequest, reply: FastifyReply) {
+  try {
+    await request.jwtVerify()
+  } catch (err) {
+    reply.send(err)
+  }
+}
 
 const registerSchema = z.object({
   nome: z.string().min(2),

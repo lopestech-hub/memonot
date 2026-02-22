@@ -247,7 +247,7 @@ export const notesRoutes: FastifyPluginAsync = async (fastify) => {
 
   // Buscar notas
   fastify.get('/busca', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const { q } = request.query as { q?: string }

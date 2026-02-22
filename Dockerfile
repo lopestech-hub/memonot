@@ -20,11 +20,17 @@ FROM node:20-alpine
 ENV TZ=America/Sao_Paulo
 WORKDIR /app
 
+# Instalar OpenSSL e dependências necessárias para Prisma
+RUN apk add --no-cache openssl openssl-dev libc6-compat
+
 # Copiar arquivos do backend
 COPY --from=backend-builder /app/backend/dist ./dist
 COPY --from=backend-builder /app/backend/node_modules ./node_modules
 COPY --from=backend-builder /app/backend/package.json ./
 COPY --from=backend-builder /app/backend/prisma ./prisma
+
+# Regenerar Prisma Client para a arquitetura correta
+RUN npx prisma generate
 
 # Copiar build do frontend
 COPY --from=frontend-builder /app/frontend/dist ./public

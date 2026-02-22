@@ -1,6 +1,7 @@
 import { FastifyPluginAsync } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
+import { authenticate } from '../plugins/auth'
 
 const createNoteSchema = z.object({
   titulo: z.string().min(1),
@@ -14,7 +15,7 @@ const updateNoteSchema = createNoteSchema.partial()
 export const notesRoutes: FastifyPluginAsync = async (fastify) => {
   // Listar notas do usuário
   fastify.get('/', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const userId = (request.user as any).sub
@@ -52,7 +53,7 @@ export const notesRoutes: FastifyPluginAsync = async (fastify) => {
 
   // Criar nova nota
   fastify.post('/', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const body = createNoteSchema.parse(request.body)
@@ -106,7 +107,7 @@ export const notesRoutes: FastifyPluginAsync = async (fastify) => {
 
   // Buscar nota específica
   fastify.get('/:id', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string }
@@ -150,7 +151,7 @@ export const notesRoutes: FastifyPluginAsync = async (fastify) => {
 
   // Atualizar nota
   fastify.put('/:id', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string }
@@ -194,7 +195,7 @@ export const notesRoutes: FastifyPluginAsync = async (fastify) => {
 
   // Deletar nota (soft delete)
   fastify.delete('/:id', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string }

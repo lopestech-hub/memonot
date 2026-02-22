@@ -1,6 +1,7 @@
 import { FastifyPluginAsync } from 'fastify'
 import { z } from 'zod'
 import { prisma } from '../lib/prisma'
+import { authenticate } from '../plugins/auth'
 
 const createCategorySchema = z.object({
   nome: z.string().min(1),
@@ -11,7 +12,7 @@ const updateCategorySchema = createCategorySchema.partial()
 export const categoriesRoutes: FastifyPluginAsync = async (fastify) => {
   // Listar categorias do usuário
   fastify.get('/', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const userId = (request.user as any).sub
@@ -52,7 +53,7 @@ export const categoriesRoutes: FastifyPluginAsync = async (fastify) => {
 
   // Criar nova categoria
   fastify.post('/', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const body = createCategorySchema.parse(request.body)
@@ -87,7 +88,7 @@ export const categoriesRoutes: FastifyPluginAsync = async (fastify) => {
 
   // Atualizar categoria
   fastify.put('/:id', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string }
@@ -131,7 +132,7 @@ export const categoriesRoutes: FastifyPluginAsync = async (fastify) => {
 
   // Deletar categoria (soft delete)
   fastify.delete('/:id', {
-    onRequest: [fastify.authenticate],
+    onRequest: [authenticate],
   }, async (request, reply) => {
     try {
       const { id } = request.params as { id: string }

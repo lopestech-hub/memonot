@@ -19,21 +19,10 @@ fastify.register(jwt, {
   secret: process.env.JWT_SECRET || 'seu-segredo-aqui',
 })
 
-// Registrar rotas (após JWT estar disponível)
-fastify.after(() => {
-  // Decorator de autenticação
-  fastify.decorate('authenticate', async function(request: any, reply: any) {
-    try {
-      await request.jwtVerify()
-    } catch (err) {
-      reply.send(err)
-    }
-  })
-  
-  fastify.register(authRoutes, { prefix: '/auth' })
-  fastify.register(notesRoutes, { prefix: '/notas' })
-  fastify.register(categoriesRoutes, { prefix: '/categorias' })
-})
+// Registrar rotas
+fastify.register(authRoutes, { prefix: '/auth' })
+fastify.register(notesRoutes, { prefix: '/notas' })
+fastify.register(categoriesRoutes, { prefix: '/categorias' })
 
 // Rota de saúde
 fastify.get('/health', async () => {
